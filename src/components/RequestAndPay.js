@@ -11,7 +11,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { sepolia } from "wagmi/chains";
-import ABI from "../abi.json";
+import ABI from "../constants/abi.json";
 
 function RequestAndPay({ request, getDetails }) {
   const [payModal, setPayModal] = useState(false);
@@ -26,7 +26,7 @@ function RequestAndPay({ request, getDetails }) {
 
   const { config } = usePrepareContractWrite({
     chainId: sepolia.id,
-    address: "0x13B8a779e44FCCD9e8cB0FFAD7C8101fBa33f92D",
+    address: FUND_REQ_ADDRESS,
     abi: ABI,
     functionName: "payRequest",
     args: [0],
@@ -43,7 +43,7 @@ function RequestAndPay({ request, getDetails }) {
 
   const { config: configRequest } = usePrepareContractWrite({
     chainId: sepolia.id,
-    address: "0x13B8a779e44FCCD9e8cB0FFAD7C8101fBa33f92D",
+    address: FUND_REQ_ADDRESS,
     abi: ABI,
     functionName: "createNewFundRequest",
     args: [requestAddress, requestAmount, requestMessage],
@@ -150,8 +150,8 @@ function RequestAndPay({ request, getDetails }) {
       >
         <p>Amount (sepoliaEth)</p>
         <InputNumber
-          value={requestAmount}
-          onChange={(val) => setRequestAmount(val)}
+          value={fundAmount}
+          onChange={(val) => setFundAmount(val)}
         />
       </Modal>
 

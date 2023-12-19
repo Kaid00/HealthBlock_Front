@@ -13,7 +13,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { sepolia } from "wagmi/chains";
-import ABI from "../abi.json";
+import ABI from "../constants/abi.json";
 import { Modal, Input, InputNumber } from "antd";
 
 function AccountDetails({ address, name, balance, getDetails }) {
