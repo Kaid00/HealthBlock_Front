@@ -1,5 +1,5 @@
 import "./App.css";
-import logo from "./logo.png";
+import logo from "./health.png";
 import { Layout, Button } from "antd";
 import CurrentBalance from "./components/CurrentBalance";
 import RequestAndPay from "./components/RequestAndPay";
@@ -15,7 +15,6 @@ const { Header, Content } = Layout;
 function App() {
   const [name, setName] = useState("...");
   const [balance, setBalance] = useState("...");
-  const [dollars, setDollars] = useState("...");
   const [history, setHistory] = useState(null);
   const [request, setRequest] = useState({ 1: [0], 0: [] });
 
@@ -29,12 +28,11 @@ function App() {
     disconnect();
     setName("...");
     setBalance("...");
-    setDollars("...");
     setHistory(null);
     setRequest({ 1: [0], 0: [] });
   }
 
-  async function getNameAndBalance() {
+  async function getDetails() {
     const res = await axios.get(
       `https://healthblock-9a36d3921a32.herokuapp.com/details?`,
       {
@@ -48,14 +46,13 @@ function App() {
     }
 
     setBalance(String(response.balance));
-    setDollars(String(response.dollars));
     setHistory(response.history);
     setRequest(response.requests);
   }
 
   useEffect(() => {
     if (!isConnected) return;
-    getNameAndBalance();
+    getDetails();
   }, [isConnected]);
 
   return (
@@ -64,21 +61,7 @@ function App() {
         <Header className="header">
           <div className="headerLeft">
             <img src={logo} alt="logo" className="logo" />
-
-            {isConnected && (
-              <>
-                <div
-                  className="menuOption"
-                  style={{ borderBottom: "1.5px solid black" }}
-                >
-                  Summary
-                </div>
-                <div className="menuOption">Activity</div>
-                <div className="menuOption">{`Send & Request`}</div>
-                <div className="menuOption">Wallet</div>
-                <div className="menuOption">Help</div>
-              </>
-            )}
+            Health Block DAPP
           </div>
 
           {isConnected ? (
@@ -107,14 +90,12 @@ function App() {
               {/* Components */}
               <div className="firstColumn">
                 <CurrentBalance balance={balance} />
-                <RequestAndPay
-                  request={request}
-                  getNameAndBalance={getNameAndBalance}
-                />
+                <RequestAndPay request={request} getDetails={getDetails} />
                 <AccountDetails
                   address={address}
                   name={name}
                   balance={balance}
+                  getDetails={getDetails}
                 />
               </div>
               <div className="secondColumn">

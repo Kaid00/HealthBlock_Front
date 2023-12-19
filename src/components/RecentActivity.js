@@ -3,14 +3,9 @@ import { Card, Table } from "antd";
 
 const columns = [
   {
-    title: "Payment Subjet",
+    title: "Contact",
     dataIndex: "subject",
     key: "subject",
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    key: "type",
   },
   {
     title: "Address",
@@ -27,11 +22,9 @@ const columns = [
     title: "Amount",
     key: "amount",
     render: (_, record) => (
-      <div
-        style={record.type === "Send" ? { color: "red" } : { color: "green" }}
-      >
-        {record.type === "Send" ? "-" : "+"}
-        {record.amount} Matic
+      <div style={record.type === "-" ? { color: "red" } : { color: "green" }}>
+        {record.type}
+        {record.amount} Sepolia ETH
       </div>
     ),
   },

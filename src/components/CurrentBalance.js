@@ -5,12 +5,8 @@ function CurrentBalance({ balance }) {
   return (
     <Card title="Current Balance" style={{ width: "100%" }}>
       <div className="currentBalance">
-        <div style={{ lineHeight: "70px" }}> ETH {balance}</div>
-        <div style={{ fontSize: "20px" }}>Available</div>
-      </div>
-      <div className="balanceOptions">
-        <div className="extraOption">Swap Tokens</div>
-        <div className="extraOption">Bridge Tokens</div>
+        <div style={{ lineHeight: "70px" }}> {balance}</div>
+        <div style={{ fontSize: "20px" }}>Sepolia ETH</div>
       </div>
     </Card>
   );

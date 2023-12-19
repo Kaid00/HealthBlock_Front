@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { DollarOutlined, SwapOutlined } from "@ant-design/icons";
+import {
+  DollarOutlined,
+  FunnelPlotOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
 import { Modal, Input, InputNumber } from "antd";
 import {
-  UsePrepareContractWriteConfig,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
@@ -10,10 +13,12 @@ import {
 import { sepolia } from "wagmi/chains";
 import ABI from "../abi.json";
 
-function RequestAndPay({ request, getNameAndBalance }) {
+function RequestAndPay({ request, getDetails }) {
   const [payModal, setPayModal] = useState(false);
+  const [fundModal, setFundModal] = useState(false);
   const [requestModal, setRequestModal] = useState(false);
-  const [requestAmount, setRequestAmount] = useState(5);
+  const [requestAmount, setRequestAmount] = useState(1);
+  const [fundAmount, setFundAmount] = useState(1);
   const [requestAddress, setRequestAddress] = useState("");
   const [requestMessage, setRequestMessage] = useState("");
 
@@ -53,7 +58,7 @@ function RequestAndPay({ request, getNameAndBalance }) {
 
   useEffect(() => {
     if (isSuccess || isSuccessRequest) {
-      getNameAndBalance();
+      getDetails();
     }
   }, [isSuccess, isSuccessRequest]);
 
@@ -64,6 +69,12 @@ function RequestAndPay({ request, getNameAndBalance }) {
     setPayModal(false);
   };
 
+  const showFundModal = () => {
+    setFundModal(true);
+  };
+  const hideFundModal = () => {
+    setFundModal(false);
+  };
   const showRequestModal = () => {
     setRequestModal(true);
   };
@@ -73,6 +84,8 @@ function RequestAndPay({ request, getNameAndBalance }) {
 
   return (
     <>
+      {/* Payment modal */}
+
       <Modal
         title="Confirm Payment"
         open={payModal}
@@ -92,6 +105,8 @@ function RequestAndPay({ request, getNameAndBalance }) {
           </>
         )}
       </Modal>
+
+      {/* Request modal */}
       <Modal
         title="Request A Payment"
         open={requestModal}
@@ -116,11 +131,31 @@ function RequestAndPay({ request, getNameAndBalance }) {
         />
         <p>Message</p>
         <Input
-          placeholder="Lunch Bill..."
+          placeholder="..."
           value={requestMessage}
           onChange={(val) => setRequestMessage(val.target.value)}
         />
       </Modal>
+
+      {/* Fund modal */}
+      <Modal
+        title="Fund a Campaign"
+        open={fundModal}
+        onOk={() => {
+          hideFundModal();
+        }}
+        onCancel={hideFundModal}
+        okText="Proceed To Fund"
+        cancelText="Cancel"
+      >
+        <p>Amount (sepoliaEth)</p>
+        <InputNumber
+          value={requestAmount}
+          onChange={(val) => setRequestAmount(val)}
+        />
+      </Modal>
+
+      {/* Buttons */}
       <div className="requestAndPay">
         <div
           className="quickOption"
@@ -140,8 +175,18 @@ function RequestAndPay({ request, getNameAndBalance }) {
             showRequestModal();
           }}
         >
-          <SwapOutlined style={{ fontSize: "26px" }} />
+          <SendOutlined style={{ fontSize: "26px" }} />
           Request
+        </div>
+
+        <div
+          className="quickOption"
+          onClick={() => {
+            showFundModal();
+          }}
+        >
+          <FunnelPlotOutlined style={{ fontSize: "26px" }} />
+          Fund
         </div>
       </div>
     </>
